@@ -33,6 +33,7 @@ class TestDog:
         Session = sessionmaker(engine)
         session = Session()
         assert(session.query(Dog))
+        assert engine is not None, "Make sure the create_table function returns the engine"
 
     def test_saves_dog(self):
         '''contains function "save()" that takes a Dog instance and session as arguments, saves the dog to the database, and returns the session.'''
