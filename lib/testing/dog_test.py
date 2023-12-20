@@ -2,6 +2,8 @@ import os
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.engine import reflection
+
 
 from dog import (
     create_table,
@@ -15,23 +17,18 @@ from dog import (
 from models import Base, Dog
 from testing.conftest import db_dir, SQLITE_URL
 
-class TestModels:
-    '''lib/models.py'''
-
-    def test_has_name_and_breed_attributes(self):
-        '''contains model "Dog" with name and breed attributes.'''
-        dog = Dog(name="joey", breed="cocker spaniel")
-        assert(dog.name == "joey" and dog.breed == "cocker spaniel")
 
 class TestDog:
     '''lib/dog.py'''
 
     def test_creates_table(self):
-        '''contains function "create_table()" that takes a declarative_base and creates a SQLite database.'''
+        '''contains function "create_table()" that takes a declarative_base and creates a SQLite database that has the 'dogs' table.'''
         
         engine = create_engine(SQLITE_URL)
         create_table(Base, engine)
-        assert os.path.exists(db_dir)
+        insp = reflection.Inspector.from_engine(engine)
+        assert any(insp.get_table_names())  # Assert that at least one table exists
+        assert 'dogs' in insp.get_table_names()  # Assert that the table we created exists
         os.remove(db_dir)
 
     def test_saves_dog(self):
@@ -126,7 +123,7 @@ class TestDog:
         os.remove(db_dir)
 
     def test_updates_record(self):
-        '''contains function "update_breed()" that takes a session instance, and breed as arguments and updates the instance's breed.'''
+        '''contains function "update_breed()" that takes a session, dog instance, and breed as arguments and updates the dog instance's breed.'''
         
         engine = create_engine(SQLITE_URL)
         Base.metadata.create_all(engine)

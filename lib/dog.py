@@ -1,6 +1,6 @@
 from models import Dog
 
-def create_table(base):
+def create_table(base, engine):
     pass
 
 def save(session, dog):

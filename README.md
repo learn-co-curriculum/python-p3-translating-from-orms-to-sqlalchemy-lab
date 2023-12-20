@@ -38,12 +38,10 @@ code to get those tests passing- using SQLAlchemy, it should be much easier.
 
 ### Tips and Tricks
 
-- The bodies of all functions in `dog.py` except `create_table()` and `save()`
+- The bodies of all functions in `dog.py` except `update_breed()` and `save()`
   should be composed of a single line of code.
 - Read through the `pytest` error messages to make sure the input and output
   for your functions match the tests.
-- Remember which attributes are required when designing a SQLAlchemy data
-  model: a `__tablename__`, a `primary_key`, and one or more `Column`s.
 
 Once all of your tests are passing, commit and push your work using `git` to
 submit.
